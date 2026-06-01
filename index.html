@@ -257,6 +257,123 @@
     <a data-target="regler">Regler</a>
   </nav>
 
+  <!-- ============ LOG / TRACKER ============ -->
+  <section id="log">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Træningslog</h2><span class="note">// gemmes i din browser</span></div>
+    <div class="log-intro" id="storageNote">
+      Dataene gemmes lokalt i <b>denne browser på din telefon</b>. For at de bevares: åbn filen i din egen browser (Safari/Chrome) og læg den evt. på hjemmeskærmen. Tag backup via <b>Eksportér</b> nederst.
+    </div>
+
+    <div class="log-tabs">
+      <button class="log-tab active" data-log="styrke">Styrke</button>
+      <button class="log-tab" data-log="kondition">Ruck / kondition</button>
+      <button class="log-tab" data-log="krop">Kropsvægt</button>
+    </div>
+
+    <!-- STYRKE LOG -->
+    <div class="log-panel active" id="log-styrke">
+      <div class="form-card">
+        <h4>Registrér sæt</h4>
+        <div class="field"><label>Øvelse</label>
+          <select id="s-ex">
+            <option>Squat</option><option>Front squat</option><option>Dødløft</option>
+            <option>Romanian deadlift</option><option>Bænkpres</option><option>Incline bænk</option>
+            <option>Overhead press</option><option>Pullups / chinups</option><option>Bent-over rows</option>
+            <option>Bulgarian split squat</option><option>Zercher / goblet squat</option>
+            <option>Loading pin hold</option><option>Wrist roller</option>
+          </select>
+        </div>
+        <div class="row3">
+          <div class="field"><label>Vægt (kg)</label><select id="s-w"></select></div>
+          <div class="field"><label>Reps</label><select id="s-r"></select></div>
+          <div class="field"><label>Dato</label><input id="s-d" type="date"></div>
+        </div>
+        <button class="btn" id="s-save">Gem sæt</button>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="ch-head"><h4>Progression</h4>
+          <select id="s-chart-ex" style="width:auto;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--sand);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 8px"></select>
+        </div>
+        <canvas id="s-chart" width="600" height="240"></canvas>
+        <div class="ch-meta" id="s-chart-meta" style="text-align:center;padding:6px 0 4px">Estimeret 1RM (Epley) over tid</div>
+      </div>
+
+      <div class="form-card"><h4>Seneste sæt</h4><ul class="log-list" id="s-list"></ul></div>
+    </div>
+
+    <!-- KONDITION LOG -->
+    <div class="log-panel" id="log-kondition">
+      <div class="form-card">
+        <h4>Registrér tur</h4>
+        <div class="field"><label>Type</label>
+          <select id="c-type"><option>Ruck</option><option>Lang ruck</option><option>Bakkeintervaller</option><option>Lang tur</option></select>
+        </div>
+        <div class="row3">
+          <div class="field"><label>Distance (km)</label><select id="c-dist"></select></div>
+          <div class="field"><label>Vægt (kg)</label><select id="c-w"></select></div>
+          <div class="field"><label>Tid (min)</label><select id="c-t"></select></div>
+        </div>
+        <div class="field"><label>Dato</label><input id="c-d" type="date"></div>
+        <button class="btn" id="c-save">Gem tur</button>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="ch-head"><h4>Ruck-belastning</h4>
+          <select id="c-metric" style="width:auto;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--sand);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 8px">
+            <option value="dist">Distance (km)</option><option value="w">Vægt (kg)</option><option value="load">Belastning (kg·km)</option><option value="pace">Tempo (min/km)</option>
+          </select>
+        </div>
+        <canvas id="c-chart" width="600" height="240"></canvas>
+        <div class="ch-meta" id="c-chart-meta" style="text-align:center;padding:6px 0 4px"></div>
+      </div>
+
+      <div class="form-card"><h4>Seneste ture</h4><ul class="log-list" id="c-list"></ul></div>
+    </div>
+
+    <!-- KROPSVÆGT LOG -->
+    <div class="log-panel" id="log-krop">
+      <div class="form-card">
+        <h4>Registrér kropsvægt</h4>
+        <div class="row2">
+          <div class="field"><label>Vægt (kg)</label><select id="b-w"></select></div>
+          <div class="field"><label>Dato</label><input id="b-d" type="date"></div>
+        </div>
+        <button class="btn" id="b-save">Gem vejning</button>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="ch-head"><h4>Kropsvægt over tid</h4></div>
+        <canvas id="b-chart" width="600" height="240"></canvas>
+        <div class="ch-meta" id="b-chart-meta" style="text-align:center;padding:6px 0 4px"></div>
+      </div>
+
+      <div class="form-card"><h4>Seneste vejninger</h4><ul class="log-list" id="b-list"></ul></div>
+    </div>
+
+    <!-- COACH EXPORT -->
+    <div class="form-card" id="coach">
+      <h4>Send til din coach</h4>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">Lav et klar-til-indsæt resumé til din GPT-coach, så den kan vurdere progressionen.</p>
+      <div class="btn-row">
+        <button class="btn ghost" id="cp-hist">📋 Hele historikken</button>
+        <button class="btn ghost" id="cp-session">📋 Seneste session</button>
+      </div>
+      <textarea id="cp-out" readonly style="display:none;width:100%;margin-top:12px;min-height:170px;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.55;padding:11px;resize:vertical"></textarea>
+    </div>
+
+    <!-- BACKUP -->
+    <div class="form-card">
+      <h4>Backup</h4>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">Gem dine data som fil, eller hent dem ind på en anden enhed.</p>
+      <div class="btn-row">
+        <button class="btn ghost" id="export">⬇ Eksportér data</button>
+        <button class="btn ghost" id="import">⬆ Importér data</button>
+      </div>
+      <input type="file" id="import-file" accept="application/json" style="display:none">
+    </div>
+  </section>
+
   <div class="rpe-legend">
     <span class="t">// RPE-skala</span> &nbsp; <b>RPE 7</b> = 3 reps i tanken · <b>RPE 8</b> = 2 reps i tanken · <b>RPE 9</b> = 1 rep i tanken.
     Hold de tunge løft på <b>RPE 7–8</b> — du skal kunne rucke og leve resten af ugen.
@@ -264,7 +381,7 @@
 
   <!-- ============ STYRKEPAS ============ -->
   <section id="ugea">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Styrkepas</h2><span class="note">// roteres A → B → A → B</span></div>
+    <div class="sec-head"><span class="sec-num">02</span><h2>Styrkepas</h2><span class="note">// roteres A → B → A → B</span></div>
 
     <div class="tabs">
       <button class="tab active" data-tab="a"><span>Uge A</span><small>Styrke A + B</small></button>
@@ -493,7 +610,7 @@
 
   <!-- ============ KONDITION ============ -->
   <section id="kondition">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Konditionspas</h2><span class="note">// ruck &gt; løb</span></div>
+    <div class="sec-head"><span class="sec-num">03</span><h2>Konditionspas</h2><span class="note">// ruck &gt; løb</span></div>
 
     <div class="session acc-ruck">
       <div class="session-head"><div><div class="sday">Onsdag · Uge A</div><div class="stitle">Ruck</div></div>
@@ -545,7 +662,7 @@
 
   <!-- ============ MODUL-SYSTEM ============ -->
   <section id="moduler">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Modul-system</h2><span class="note">// byt frit efter udstyr &amp; dagsform</span></div>
+    <div class="sec-head"><span class="sec-num">04</span><h2>Modul-system</h2><span class="note">// byt frit efter udstyr &amp; dagsform</span></div>
     <p style="color:var(--muted);font-size:14px;margin-bottom:16px;max-width:75ch">Hver øvelse hører til et bevægelsesmønster. Mangler du udstyr, er du træt, eller driller en led — så byt til en variant i samme række. Belastningen og formålet bevares.</p>
     <div class="mod-scroll"><table>
       <thead><tr><th>Mønster</th><th>Primær</th><th>Alternativ</th><th>Let dag / uden udstyr</th></tr></thead>
@@ -564,7 +681,7 @@
 
   <!-- ============ PROGRESSION ============ -->
   <section id="progression">
-    <div class="sec-head"><span class="sec-num">04</span><h2>10 ugers progression</h2><span class="note">// byg gradvist</span></div>
+    <div class="sec-head"><span class="sec-num">05</span><h2>10 ugers progression</h2><span class="note">// byg gradvist</span></div>
     <div class="prog-scroll"><table>
       <thead><tr><th>Uge</th><th>Ruck</th><th>Lang ruck</th><th>Bakkeinterval</th><th>Carrier</th></tr></thead>
       <tbody>
@@ -580,7 +697,7 @@
 
   <!-- ============ PRINCIPPER ============ -->
   <section id="principper">
-    <div class="sec-head"><span class="sec-num">05</span><h2>Principper</h2><span class="note">// carrier · core · greb</span></div>
+    <div class="sec-head"><span class="sec-num">06</span><h2>Principper</h2><span class="note">// carrier · core · greb</span></div>
     <div class="info-grid">
       <div class="info-card">
         <h3><span class="ic">[ PC ]</span> Plate carrier</h3>
@@ -614,7 +731,7 @@
 
   <!-- ============ REGLER ============ -->
   <section id="regler">
-    <div class="sec-head"><span class="sec-num">06</span><h2>Regler for belastning &amp; restitution</h2></div>
+    <div class="sec-head"><span class="sec-num">07</span><h2>Regler for belastning &amp; restitution</h2></div>
     <div class="rules">
       <div class="rule"><span class="rn">01</span><p>Øg <b>ikke</b> både vægt, distance og tempo i samme uge.</p></div>
       <div class="rule crit"><span class="rn">02</span><p>Bliver <b>lår eller stortå irriteret</b> → skær ned på bakkeintervaller først.</p></div>
@@ -628,7 +745,7 @@
 
   <!-- ============ UDSTYR ============ -->
   <section id="udstyr">
-    <div class="sec-head"><span class="sec-num">07</span><h2>Udstyr</h2><span class="note">// home gym</span></div>
+    <div class="sec-head"><span class="sec-num">08</span><h2>Udstyr</h2><span class="note">// home gym</span></div>
     <div class="chips">
       <span class="chip"><b>Squat rack</b> + bænk</span>
       <span class="chip">Vægtstang <b>20 kg</b></span>
@@ -643,123 +760,6 @@
       <span class="chip">Rygsæk m. hoftebælte <b>op til 20 kg</b></span>
       <span class="chip">Plate carrier <b>6 kg</b></span>
       <span class="chip" style="opacity:.6">Kabelmaskine <b>(måske senere)</b></span>
-    </div>
-  </section>
-
-  <!-- ============ LOG / TRACKER ============ -->
-  <section id="log">
-    <div class="sec-head"><span class="sec-num">08</span><h2>Træningslog</h2><span class="note">// gemmes i din browser</span></div>
-    <div class="log-intro" id="storageNote">
-      Dataene gemmes lokalt i <b>denne browser på din telefon</b>. For at de bevares: åbn filen i din egen browser (Safari/Chrome) og læg den evt. på hjemmeskærmen. Tag backup via <b>Eksportér</b> nederst.
-    </div>
-
-    <div class="log-tabs">
-      <button class="log-tab active" data-log="styrke">Styrke</button>
-      <button class="log-tab" data-log="kondition">Ruck / kondition</button>
-      <button class="log-tab" data-log="krop">Kropsvægt</button>
-    </div>
-
-    <!-- STYRKE LOG -->
-    <div class="log-panel active" id="log-styrke">
-      <div class="form-card">
-        <h4>Registrér sæt</h4>
-        <div class="field"><label>Øvelse</label>
-          <select id="s-ex">
-            <option>Squat</option><option>Front squat</option><option>Dødløft</option>
-            <option>Romanian deadlift</option><option>Bænkpres</option><option>Incline bænk</option>
-            <option>Overhead press</option><option>Pullups / chinups</option><option>Bent-over rows</option>
-            <option>Bulgarian split squat</option><option>Zercher / goblet squat</option>
-            <option>Loading pin hold</option><option>Wrist roller</option>
-          </select>
-        </div>
-        <div class="row3">
-          <div class="field"><label>Vægt (kg)</label><input id="s-w" type="number" inputmode="decimal" step="0.5" placeholder="60"></div>
-          <div class="field"><label>Reps</label><input id="s-r" type="number" inputmode="numeric" placeholder="5"></div>
-          <div class="field"><label>Dato</label><input id="s-d" type="date"></div>
-        </div>
-        <button class="btn" id="s-save">Gem sæt</button>
-      </div>
-
-      <div class="chart-wrap">
-        <div class="ch-head"><h4>Progression</h4>
-          <select id="s-chart-ex" style="width:auto;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--sand);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 8px"></select>
-        </div>
-        <canvas id="s-chart" width="600" height="240"></canvas>
-        <div class="ch-meta" id="s-chart-meta" style="text-align:center;padding:6px 0 4px">Estimeret 1RM (Epley) over tid</div>
-      </div>
-
-      <div class="form-card"><h4>Seneste sæt</h4><ul class="log-list" id="s-list"></ul></div>
-    </div>
-
-    <!-- KONDITION LOG -->
-    <div class="log-panel" id="log-kondition">
-      <div class="form-card">
-        <h4>Registrér tur</h4>
-        <div class="field"><label>Type</label>
-          <select id="c-type"><option>Ruck</option><option>Lang ruck</option><option>Bakkeintervaller</option><option>Lang tur</option></select>
-        </div>
-        <div class="row3">
-          <div class="field"><label>Distance (km)</label><input id="c-dist" type="number" inputmode="decimal" step="0.1" placeholder="6"></div>
-          <div class="field"><label>Vægt (kg)</label><input id="c-w" type="number" inputmode="decimal" step="0.5" placeholder="10"></div>
-          <div class="field"><label>Tid (min)</label><input id="c-t" type="number" inputmode="numeric" placeholder="45"></div>
-        </div>
-        <div class="field"><label>Dato</label><input id="c-d" type="date"></div>
-        <button class="btn" id="c-save">Gem tur</button>
-      </div>
-
-      <div class="chart-wrap">
-        <div class="ch-head"><h4>Ruck-belastning</h4>
-          <select id="c-metric" style="width:auto;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--sand);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 8px">
-            <option value="dist">Distance (km)</option><option value="w">Vægt (kg)</option><option value="load">Belastning (kg·km)</option><option value="pace">Tempo (min/km)</option>
-          </select>
-        </div>
-        <canvas id="c-chart" width="600" height="240"></canvas>
-        <div class="ch-meta" id="c-chart-meta" style="text-align:center;padding:6px 0 4px"></div>
-      </div>
-
-      <div class="form-card"><h4>Seneste ture</h4><ul class="log-list" id="c-list"></ul></div>
-    </div>
-
-    <!-- KROPSVÆGT LOG -->
-    <div class="log-panel" id="log-krop">
-      <div class="form-card">
-        <h4>Registrér kropsvægt</h4>
-        <div class="row2">
-          <div class="field"><label>Vægt (kg)</label><input id="b-w" type="number" inputmode="decimal" step="0.1" placeholder="82.5"></div>
-          <div class="field"><label>Dato</label><input id="b-d" type="date"></div>
-        </div>
-        <button class="btn" id="b-save">Gem vejning</button>
-      </div>
-
-      <div class="chart-wrap">
-        <div class="ch-head"><h4>Kropsvægt over tid</h4></div>
-        <canvas id="b-chart" width="600" height="240"></canvas>
-        <div class="ch-meta" id="b-chart-meta" style="text-align:center;padding:6px 0 4px"></div>
-      </div>
-
-      <div class="form-card"><h4>Seneste vejninger</h4><ul class="log-list" id="b-list"></ul></div>
-    </div>
-
-    <!-- COACH EXPORT -->
-    <div class="form-card" id="coach">
-      <h4>Send til din coach</h4>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">Lav et klar-til-indsæt resumé til din GPT-coach, så den kan vurdere progressionen.</p>
-      <div class="btn-row">
-        <button class="btn ghost" id="cp-hist">📋 Hele historikken</button>
-        <button class="btn ghost" id="cp-session">📋 Seneste session</button>
-      </div>
-      <textarea id="cp-out" readonly style="display:none;width:100%;margin-top:12px;min-height:170px;background:var(--bg-2);border:1px solid var(--line-bright);border-radius:2px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.55;padding:11px;resize:vertical"></textarea>
-    </div>
-
-    <!-- BACKUP -->
-    <div class="form-card">
-      <h4>Backup</h4>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:12px">Gem dine data som fil, eller hent dem ind på en anden enhed.</p>
-      <div class="btn-row">
-        <button class="btn ghost" id="export">⬇ Eksportér data</button>
-        <button class="btn ghost" id="import">⬆ Importér data</button>
-      </div>
-      <input type="file" id="import-file" accept="application/json" style="display:none">
     </div>
   </section>
 
@@ -820,6 +820,24 @@
     document.getElementById('s-d').value=today();
     document.getElementById('c-d').value=today();
     document.getElementById('b-d').value=today();
+
+    // fill scroll-pickers
+    function fillSelect(id,min,max,step){
+      var sel=document.getElementById(id);if(!sel)return;
+      sel.innerHTML='';
+      var ph=document.createElement('option');ph.value='';ph.textContent='–';sel.appendChild(ph);
+      var n=Math.round((max-min)/step);
+      for(var i=0;i<=n;i++){
+        var v=min+i*step;var s=(Math.round(v*100)/100).toString();
+        var o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);
+      }
+    }
+    fillSelect('s-w',0,250,2.5);   // styrke vægt
+    fillSelect('s-r',1,30,1);      // reps
+    fillSelect('c-dist',0,30,0.5); // distance km
+    fillSelect('c-w',0,40,1);      // rygsæk vægt
+    fillSelect('c-t',0,240,5);     // tid min
+    fillSelect('b-w',40,150,0.5);  // kropsvægt
 
     /* ---- log tabs ---- */
     document.querySelectorAll('.log-tab').forEach(function(t){
