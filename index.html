@@ -226,6 +226,7 @@
     border-bottom:1px solid var(--line);font-size:13.5px}
   .log-list li:last-child{border-bottom:none}
   .log-list .li-main{color:var(--text)}.log-list .li-main b{color:var(--sand);font-weight:600}
+  .li-note{display:block;font-size:12px;color:var(--muted);font-style:italic;margin-top:3px}
   .log-list .li-date{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--faint);white-space:nowrap}
   .li-del{background:none;border:none;color:var(--danger);font-size:17px;cursor:pointer;padding:0 4px;line-height:1;opacity:.6}
   .li-del:hover{opacity:1}
@@ -235,6 +236,21 @@
     background:var(--olive-bright);color:#0c0e0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
     letter-spacing:.05em;text-transform:uppercase;padding:11px 18px;border-radius:3px;opacity:0;pointer-events:none;transition:.3s}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ===== TEST C ===== */
+  .tc-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--olive-bright);
+    border:1px solid var(--olive);padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .lv{font-family:'Oswald',sans-serif;font-weight:600;color:#fff;white-space:nowrap}
+  .lvl-goal td{background:rgba(138,154,75,.18)!important}
+  .lvl-goal .lv{color:var(--olive-bright);font-weight:700}
+  .lvl-reach td{background:rgba(205,185,138,.10)}
+  .lvl-reach .lv{color:var(--sand);font-weight:700}
+  .tc-legend{display:flex;gap:16px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin:10px 0 4px}
+  .tc-legend span{display:flex;align-items:center;gap:6px}
+  .tc-legend i{width:12px;height:12px;border-radius:2px;display:inline-block}
+  .tc-h4{font-family:'Oswald',sans-serif;font-weight:600;text-transform:uppercase;color:var(--olive-bright);font-size:16px;letter-spacing:.03em;margin:24px 0 10px}
+  .info-card p{font-size:13.5px;color:var(--text)}.info-card p b{color:var(--sand);font-weight:600}
+  .info-card .where{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--olive);margin-bottom:5px}
 </style>
 </head>
 <body>
@@ -251,6 +267,7 @@
     <a data-target="ugea" data-tab="a">Uge A</a>
     <a data-target="ugea" data-tab="b">Uge B</a>
     <a data-target="kondition">Kondition</a>
+    <a data-target="testc">⌖ Test C</a>
     <a data-target="moduler">Modul-system</a>
     <a data-target="progression">Progression</a>
     <a data-target="principper">Principper</a>
@@ -276,11 +293,31 @@
         <h4>Registrér sæt</h4>
         <div class="field"><label>Øvelse</label>
           <select id="s-ex">
-            <option>Squat</option><option>Front squat</option><option>Dødløft</option>
-            <option>Romanian deadlift</option><option>Bænkpres</option><option>Incline bænk</option>
-            <option>Overhead press</option><option>Pullups / chinups</option><option>Bent-over rows</option>
-            <option>Bulgarian split squat</option><option>Zercher / goblet squat</option>
-            <option>Loading pin hold</option><option>Wrist roller</option>
+            <optgroup label="Ben">
+              <option>Squat</option><option>Front squat</option><option>Dødløft</option>
+              <option>Romanian deadlift</option><option>Bulgarian split squat</option>
+              <option>Lunges (vægtstang)</option><option>Zercher / goblet squat</option><option>Landmine squat</option>
+            </optgroup>
+            <optgroup label="Pres">
+              <option>Bænkpres</option><option>Incline bænk</option><option>Overhead press</option>
+              <option>Landmine press</option><option>Parallette dips</option>
+              <option>Parallette push-ups</option><option>Pike push-ups</option>
+            </optgroup>
+            <optgroup label="Træk">
+              <option>Pullups / chinups</option><option>Bent-over rows</option><option>Landmine row</option>
+            </optgroup>
+            <optgroup label="Core">
+              <option>Planke</option><option>Sideplanke</option><option>Hanging knee raises</option>
+              <option>Hanging leg raises</option><option>L-sit</option><option>Dead bug</option>
+              <option>Landmine rotation</option>
+            </optgroup>
+            <optgroup label="Greb">
+              <option>Loading pin hold</option><option>Wrist roller</option>
+              <option>Forearm lever</option><option>Dead hang</option>
+            </optgroup>
+            <optgroup label="Test C / kondition">
+              <option>Burpees</option>
+            </optgroup>
           </select>
         </div>
         <div class="row3">
@@ -288,6 +325,7 @@
           <div class="field"><label>Reps</label><select id="s-r"></select></div>
           <div class="field"><label>Dato</label><input id="s-d" type="date"></div>
         </div>
+        <div class="field"><label>Kommentar (valgfri)</label><input id="s-note" type="text" placeholder="fx 5 hele + 5 halve reps"></div>
         <button class="btn" id="s-save">Gem sæt</button>
       </div>
 
@@ -307,7 +345,7 @@
       <div class="form-card">
         <h4>Registrér tur</h4>
         <div class="field"><label>Type</label>
-          <select id="c-type"><option>Ruck</option><option>Lang ruck</option><option>Bakkeintervaller</option><option>Lang tur</option></select>
+          <select id="c-type"><option>Ruck</option><option>Lang ruck</option><option>Bakkeintervaller</option><option>Airbike / Tabata</option><option>Lang tur</option></select>
         </div>
         <div class="row3">
           <div class="field"><label>Distance (km)</label><select id="c-dist"></select></div>
@@ -315,6 +353,7 @@
           <div class="field"><label>Tid (min)</label><select id="c-t"></select></div>
         </div>
         <div class="field"><label>Dato</label><input id="c-d" type="date"></div>
+        <div class="field"><label>Kommentar (valgfri)</label><input id="c-note" type="text" placeholder="fx 8 runder, 95 kcal, kuperet"></div>
         <button class="btn" id="c-save">Gem tur</button>
       </div>
 
@@ -339,6 +378,7 @@
           <div class="field"><label>Vægt (kg)</label><select id="b-w"></select></div>
           <div class="field"><label>Dato</label><input id="b-d" type="date"></div>
         </div>
+        <div class="field"><label>Kommentar (valgfri)</label><input id="b-note" type="text" placeholder="fx morgenvægt, efter faste"></div>
         <button class="btn" id="b-save">Gem vejning</button>
       </div>
 
@@ -386,6 +426,7 @@
     <div class="tabs">
       <button class="tab active" data-tab="a"><span>Uge A</span><small>Styrke A + B</small></button>
       <button class="tab" data-tab="b"><span>Uge B</span><small>Styrke C + D</small></button>
+      <button class="tab" data-tab="c"><span>Uge C</span><small>Styrke E + F</small></button>
     </div>
 
     <!-- UGE A -->
@@ -427,12 +468,12 @@
             <div class="det-block prog"><div class="det-label">Progression</div><p>Flere reps pr. sæt → <b>tilføj plate carrier (6 kg)</b> → vægtbælte senere.</p></div>
           </div></details>
 
-        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">04</span>Bænkpres</span><span class="ex-right"><span class="ex-sets">5×5</span><span class="chev"></span></span></summary>
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">04</span>Dips<span class="tc-badge">TEST C</span></span><span class="ex-right"><span class="ex-sets">4×5–8</span><span class="chev"></span></span></summary>
           <div class="ex-body">
-            <div class="meta-strip"><span class="m">Sæt × reps · <b>5×5</b></span><span class="m">Hvile · <b>2–3 min</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
-            <div class="det-block"><div class="det-label">Udførelse</div><p>Skulderblade samlet og trukket ned, fødder plantet i gulvet, let bue i lænden. Stang til nedre bryst, lige stødbane op. Sæt altid rack-sikringer når du træner alene.</p></div>
-            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>Dumbbell / KB floor press</b> hvis du er uden spotter. <b>Push-ups med carrier</b> som tilvænning på lette dage.</p></div>
-            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+2,5 kg</b> ved rene sæt. Lille trin — bryst og triceps tåler ikke spring.</p></div>
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×5–8</b></span><span class="m">Hvile · <b>2 min</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Frithængende på parallettes, fuld lockout i albuerne øverst. Sænk til bagsiden af skuldrene er under albuerne (testens dybde), pres kontrolleret op. Ret krop, skuldre nede.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Negative dips eller bænk-dips hvis du ikke kan presse op endnu. Bænkpres er flyttet til Styrke C, så pres stadig trænes.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression (Test C)</div><p>5 rene reps = <b>niveau 4</b>. Tilføj derefter vægt via bælte/vest mod <b>+10 kg (niv. 6)</b> og <b>+15 kg (niv. 7)</b>. Log under "Parallette dips".</p></div>
           </div></details>
 
         <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">05</span>Loading pin hold</span><span class="ex-right"><span class="ex-sets">3 × 20–40 s</span><span class="chev"></span></span></summary>
@@ -457,12 +498,12 @@
         <div class="session-head"><div><div class="sday">Fredag · Uge A</div><div class="stitle">Styrke B</div></div>
           <div class="smeta"><span class="badge b-strength">Styrke</span><span class="badge b-time">45 min</span></div></div>
 
-        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">01</span>Dødløft</span><span class="ex-right"><span class="ex-sets">5×5</span><span class="chev"></span></span></summary>
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">01</span>Dødløft<span class="tc-badge">TEST C</span></span><span class="ex-right"><span class="ex-sets">5×5</span><span class="chev"></span></span></summary>
           <div class="ex-body">
             <div class="meta-strip"><span class="m">Sæt × reps · <b>5×5</b></span><span class="m">Hvile · <b>2–3 min</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
             <div class="det-block"><div class="det-label">Udførelse</div><p>Stang over midtfod, ret ryg, spænd lats og core. Skub gulvet væk med benene, hold stangen tæt på kroppen, lås hofte og knæ samtidig i toppen.</p></div>
             <div class="det-block mod"><div class="det-label">Moduler</div><p>Hold den klassiske variant. Reducér ROM med <b>blokke/skiver</b> hvis lænden er øm. KB-dødløft (2×14 kg) som let dag.</p></div>
-            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+5 kg</b> når teknikken holder — aldrig på bekostning af rygposition. Kun ét tungt hinge-pas om ugen.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+5 kg</b> når teknikken holder — aldrig på bekostning af rygposition. Kun ét tungt hinge-pas om ugen. <b>Test C:</b> arbejd mod et tungt 5-rep-sæt — 85 kg (niv. 4) → 110–120 kg (niv. 6–7).</p></div>
           </div></details>
 
         <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">02</span>Overhead press</span><span class="ex-right"><span class="ex-sets">5×5</span><span class="chev"></span></span></summary>
@@ -473,12 +514,12 @@
             <div class="det-block prog"><div class="det-label">Progression</div><p><b>+1,25–2,5 kg</b> ad gangen. OHP skrider langsomt frem — vær tålmodig.</p></div>
           </div></details>
 
-        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">03</span>Bulgarian split squat</span><span class="ex-right"><span class="ex-sets">3×8/ben</span><span class="chev"></span></span></summary>
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">03</span>Barbell lunges<span class="tc-badge">TEST C</span></span><span class="ex-right"><span class="ex-sets">3×10/ben</span><span class="chev"></span></span></summary>
           <div class="ex-body">
-            <div class="meta-strip"><span class="m">Sæt × reps · <b>3×8/ben</b></span><span class="m">Hvile · <b>90 s</b></span><span class="m">Intensitet · <b>RPE 7</b></span></div>
-            <div class="det-block"><div class="det-label">Udførelse</div><p>Bagfod på bænk, forreste skinneben næsten lodret. Sænk lige ned, og driv op gennem forreste hæl. Hold overkroppen let foroverlænet og stabil.</p></div>
-            <div class="det-block mod"><div class="det-label">Moduler</div><p>Belast med <b>DB 2×5 kg</b> eller <b>KB 14 kg goblet</b>. <b>Reverse lunge</b> hvis balancen driller.</p></div>
-            <div class="det-block prog"><div class="det-label">Progression</div><p>Kropsvægt → DB → KB goblet → flere reps. God lår-byggesten der skåner ryggen.</p></div>
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>3×10/ben</b></span><span class="m">Hvile · <b>90–120 s</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Vægtstang på skuldrene. Udfaldsskridt (reverse eller walking), bagerste knæ maks ~10 cm over gulv, ret og stabil ryg, kontrolleret og kontinuerligt uden pause — præcis som i testen.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Goblet-/KB-lunges eller Bulgarian split squat på lette dage. Reverse lunge er mildest for knæet.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression (Test C)</div><p>10 reps/ben ved <b>42,5 kg = niveau 4</b> → <b>55 kg (niv. 6)</b> → <b>60 kg (niv. 7)</b>. Log under "Lunges (vægtstang)".</p></div>
           </div></details>
 
         <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">04</span>Wrist roller</span><span class="ex-right"><span class="ex-sets">3 omgange</span><span class="chev"></span></span></summary>
@@ -606,6 +647,117 @@
           </div></details>
       </div>
     </div>
+    <!-- UGE C -->
+    <div class="panel" id="c">
+      <div class="matrix-scroll"><table>
+        <thead><tr><th>Dag</th><th>Type</th><th>Varighed</th><th>Fokus</th></tr></thead>
+        <tbody>
+          <tr><td class="day">Man</td><td><span class="badge b-strength">Styrke E</span></td><td><span class="badge b-time">45 min</span></td><td>Landmine · parallettes · pres</td></tr>
+          <tr><td class="day">Tir</td><td><span class="badge b-carrier">Carrier</span></td><td><span class="badge b-time">30–45 min</span></td><td>Hundeluftning · tilvænning</td></tr>
+          <tr><td class="day">Ons</td><td><span class="badge b-cardio">Airbike Tabata</span></td><td><span class="badge b-time">20–30 min</span></td><td>Intervaller · puls</td></tr>
+          <tr class="rest"><td class="day">Tor</td><td><span class="badge b-rest">Fri / valgfri</span></td><td>—</td><td>Carrier på gåtur</td></tr>
+          <tr><td class="day">Fre</td><td><span class="badge b-strength">Styrke F</span></td><td><span class="badge b-time">45 min</span></td><td>Landmine træk · baglår · core</td></tr>
+          <tr class="rest"><td class="day">Lør</td><td><span class="badge b-rest">Fri</span></td><td>—</td><td>Restitution</td></tr>
+          <tr><td class="day">Søn</td><td><span class="badge b-ruck">Lang tur</span></td><td><span class="badge b-time">60–120 min</span></td><td>Ruck / jagt / terræn</td></tr>
+        </tbody>
+      </table></div>
+      <p style="color:var(--muted);font-size:13px;margin:-8px 0 18px;max-width:75ch">Variationsuge med de nye redskaber — landmine, parallettes og airbike. Læg den ind hver 3.–4. uge for variation, eller byt en Uge B ud med den. Lidt lettere på ryggen, mere calisthenics og skulder.</p>
+
+      <!-- STYRKE E -->
+      <div class="session acc-strength">
+        <div class="session-head"><div><div class="sday">Mandag · Uge C</div><div class="stitle">Styrke E</div></div>
+          <div class="smeta"><span class="badge b-strength">Landmine + calisthenics</span><span class="badge b-time">45 min</span></div></div>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">01</span>Opvarmning — skulder &amp; core</span><span class="ex-right"><span class="ex-sets">5 min</span><span class="chev"></span></span></summary>
+          <div class="ex-body"><div class="det-block"><div class="det-label">Udførelse</div><p>Skulder-pass-throughs, band-pull-aparts, katteryg, 10 luftsquats og et par lette push-ups. Ekstra fokus på skuldre og håndled inden landmine og parallettes.</p></div></div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">02</span>Landmine press</span><span class="ex-right"><span class="ex-sets">4×8/arm</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×8/arm</b></span><span class="m">Hvile · <b>90 s</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Stangenden i skulderhøjde, albue ind. Pres skråt op og frem til strakt arm. Spænd core og balder — undgå at læne bagover. Skift arm.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Almindelig <b>overhead press</b> eller <b>KB strict press</b>. Begge arme samtidig for mere last.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+2,5 kg</b> eller flere reps. Skuldervenlig pres-variant — god at køre tungt.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">03</span>Parallette dips</span><span class="ex-right"><span class="ex-sets">4×6–10</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×6–10</b></span><span class="m">Hvile · <b>90–120 s</b></span><span class="m">Intensitet · <b>RPE 8</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Skuldre nede og væk fra ørerne, albuer bagud langs kroppen. Sænk til overarm er vandret, pres op til lås. Let forover = mere bryst, lodret = mere triceps.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Bænk-dips eller langsomme negative dips hvis du ikke kan presse op endnu. Push-ups hvis skulderen driller.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>Flere reps → <b>plate carrier (6 kg)</b> → vægtbælte. Log som <b>Kropsvægt</b> (eller med ekstra last).</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">04</span>Front squat / goblet</span><span class="ex-right"><span class="ex-sets">4×6</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×6</b></span><span class="m">Hvile · <b>2 min</b></span><span class="m">Intensitet · <b>RPE 7</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Hold benene med i variationsugen, men lidt lettere. Front squat med albuer højt, eller goblet med KB ved brystet. Dybt og kontrolleret.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>Landmine squat</b> (stangenden ved brystet) er et skån­somt alternativ. Goblet 14 kg på trætte dage.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+2,5 kg</b> ved ren teknik.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">05</span>Parallette push-ups</span><span class="ex-right"><span class="ex-sets">3×10–15</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>3×10–15</b></span><span class="m">Hvile · <b>60–90 s</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Dybere ROM end på gulv — sænk brystet ned mellem stængerne, neutrale håndled (skånsomt). Krop lige, core spændt.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Gulv-push-ups. <b>Carrier</b> for belastning. Deficit/tempo for mere.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>Reps → tempo (3 s ned) → carrier. Log som <b>Kropsvægt</b>.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">06</span>L-sit / tuck L-sit</span><span class="ex-right"><span class="ex-sets">3× hold</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt · <b>3× maks hold</b></span><span class="m">Hvile · <b>60–90 s</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Grib stængerne, pres dig op til strakte arme, skuldre nede. Løft knæene (tuck) eller strakte ben (fuld L-sit). Hold spændt, træk ikke vejret væk.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Tuck → ét ben strakt → fuld L-sit. Hængende knæløft hvis for svært.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>+tid pr. hold → mindre tuck → fuld L-sit. Log <b>sekunder</b> i reps-feltet + <b>Kropsvægt</b>.</p></div>
+          </div></details>
+      </div>
+
+      <!-- STYRKE F -->
+      <div class="session acc-strength">
+        <div class="session-head"><div><div class="sday">Fredag · Uge C</div><div class="stitle">Styrke F</div></div>
+          <div class="smeta"><span class="badge b-strength">Landmine træk + baglår</span><span class="badge b-time">45 min</span></div></div>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">01</span>Romanian deadlift</span><span class="ex-right"><span class="ex-sets">4×8</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×8</b></span><span class="m">Hvile · <b>90–120 s</b></span><span class="m">Intensitet · <b>RPE 7</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Let knæbøj, skub hofterne bagud, stang tæt på benene. Sænk til stræk i baglåret, ret ryg hele vejen, driv hofterne frem op.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>KB RDL</b> (2×14 kg) eller klassisk dødløft hvis du hellere vil have det tungt.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+2,5–5 kg</b> når strækket styres. Tempo 3 s ned.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">02</span>Landmine row</span><span class="ex-right"><span class="ex-sets">4×8/arm</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>4×8/arm</b></span><span class="m">Hvile · <b>90 s</b></span><span class="m">Intensitet · <b>RPE 7–8</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Stå ved siden af stangen, grib enden. Træk mod hoften med albuen tæt på kroppen, klem skulderbladet. Ret ryg, stabil hofte.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>Bent-over row</b> (20 kg stang) eller <b>KB-row</b>.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p><b>+2,5–5 kg</b> når trækket styres uden at overkroppen snører op.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">03</span>Pullups / chinups</span><span class="ex-right"><span class="ex-sets">4 sæt</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt · <b>4</b></span><span class="m">Hvile · <b>90–120 s</b></span><span class="m">Mål · <b>1–2 reps fra failure</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Fuld hængestræk, træk albuerne ned, hagen over stang, ingen kip.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p>Bent-over rows eller elastik-assist indtil setup er klart / reps stiger.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>Flere reps → carrier (6 kg). Log som <b>Kropsvægt</b> eller med ekstra last.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">04</span>Landmine rotation</span><span class="ex-right"><span class="ex-sets">3×8/side</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt × reps · <b>3×8/side</b></span><span class="m">Hvile · <b>60–90 s</b></span><span class="m">Intensitet · <b>RPE 7</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Hold stangenden med strakte arme foran brystet. Rotér fra hofter og core i en bue fra side til side. Kontrolleret — ingen ryk, lad ikke lænden overtage.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>Pallof-hold</b> (statisk anti-rotation) hvis ryggen er øm. Mindre vægt / kortere arm.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>+vægt eller flere reps. Bygger rotations- og bærestyrke.</p></div>
+          </div></details>
+
+        <details class="ex"><summary class="ex-sum"><span class="ex-name"><span class="idx">05</span>Loading pin hold</span><span class="ex-right"><span class="ex-sets">3 × 20–40 s</span><span class="chev"></span></span></summary>
+          <div class="ex-body">
+            <div class="meta-strip"><span class="m">Sæt · <b>3</b></span><span class="m">Tid · <b>20–40 s</b></span><span class="m">Hvile · <b>60–90 s</b></span></div>
+            <div class="det-block"><div class="det-label">Udførelse</div><p>Rank holdning, neutral ryg, knus håndtaget. Slip når grebet svigter.</p></div>
+            <div class="det-block mod"><div class="det-label">Moduler</div><p><b>Dead hang</b> eller tungt KB-hold.</p></div>
+            <div class="det-block prog"><div class="det-label">Progression</div><p>Mod 40 s → +vægt → kortere hvile. Log <b>sekunder</b> i reps-feltet.</p></div>
+          </div></details>
+      </div>
+    </div>
   </section>
 
   <!-- ============ KONDITION ============ -->
@@ -644,6 +796,18 @@
           <div class="det-block"><div class="det-label">Udførelse</div><p>Løb op i kontrolleret, hårdt-men-ikke-maksimalt tempo. Gå rolig ned som aktiv hvile. Fokus på puls, benstyrke og kontrolleret belastning — ikke sprint.</p></div>
           <div class="det-block mod"><div class="det-label">Moduler</div><p>Reducér antal ture ved <b>første tegn på irriteret lår</b>. Erstat helt med rolig ruck hvis lår/stortå driller.</p></div>
           <div class="det-block prog"><div class="det-label">Progression</div><p><b>Flere ture (se skema), ikke mere fart.</b> Stop tidligt frem for at presse igennem.</p></div>
+        </div></details>
+    </div>
+
+    <div class="session acc-cardio">
+      <div class="session-head"><div><div class="sday">Onsdag · Uge C</div><div class="stitle">Airbike Tabata</div></div>
+        <div class="smeta"><span class="badge b-cardio">Kondition</span><span class="badge b-time">20–30 min</span></div></div>
+      <details class="ex" open><summary class="ex-sum"><span class="ex-name"><span class="idx">01</span>Tabata-intervaller</span><span class="ex-right"><span class="ex-sets">8×20/10 s</span><span class="chev"></span></span></summary>
+        <div class="ex-body">
+          <div class="meta-strip"><span class="m">Format · <b>8×20/10 s</b></span><span class="m">Varighed · <b>4 min/blok</b></span><span class="m">Indsats · <b>Maks</b></span></div>
+          <div class="det-block"><div class="det-label">Udførelse</div><p>Opvarm 5 min. 20 sek hårdt (høj kadence + tryk fra både arme og ben), 10 sek let. Gentag 8 gange = 4 min. Tag evt. 2 blokke med 3–4 min rolig pause imellem.</p></div>
+          <div class="det-block mod"><div class="det-label">Moduler</div><p>Bakkeintervaller eller rolig ruck hvis du er træt. Start med <b>6 runder</b> og byg op.</p></div>
+          <div class="det-block prog"><div class="det-label">Progression</div><p>Hold eller øg <b>omdr./kalorier pr. runde</b>. Tilføj en runde eller en ekstra blok — ikke længere intervaller.</p></div>
         </div></details>
     </div>
 
@@ -753,6 +917,9 @@
       <span class="chip">Skiver <b>2×20/15/10/5 kg</b></span>
       <span class="chip">Dumbbells <b>2×5 kg</b></span>
       <span class="chip">Kettlebells <b>2×14 kg</b></span>
+      <span class="chip"><b>Parallettes</b> (træ, m. fødder)</span>
+      <span class="chip"><b>Landmine</b> (skulder/rotation)</span>
+      <span class="chip"><b>Airbike</b> (Tabata/intervaller)</span>
       <span class="chip">Wrist roller <b>Golden Grip</b></span>
       <span class="chip">Loading pin</span>
       <span class="chip">Forearm lever</span>
@@ -760,6 +927,69 @@
       <span class="chip">Rygsæk m. hoftebælte <b>op til 20 kg</b></span>
       <span class="chip">Plate carrier <b>6 kg</b></span>
       <span class="chip" style="opacity:.6">Kabelmaskine <b>(måske senere)</b></span>
+    </div>
+  </section>
+
+  <!-- ============ TEST C ============ -->
+  <section id="testc">
+    <div class="sec-head"><span class="sec-num">09</span><h2>Forsvarets Test C</h2><span class="note">// mål: SSR niveau 4 → stræk 6–7</span></div>
+    <p class="log-intro" style="border-left-color:var(--sand)">Test C = maksimal styrke i 5 øvelser. Din rotation træner allerede alle 5 — kig efter <span class="tc-badge">TEST C</span> i passene. Nedenfor er kravene fra billederne og præcis hvor i programmet du bygger hver enkelt, uden længere pas.</p>
+
+    <div class="tc-h4">SSR — operative anbefalinger (Test C)</div>
+    <div class="mod-scroll"><table>
+      <thead><tr><th>Niveau</th><th>Lunges 10/ben</th><th>Dips</th><th>Kropshævn.</th><th>Dødløft ×5</th><th>Burpees 5 min</th></tr></thead>
+      <tbody>
+<tr><td class="lv">1</td><td>20 kg</td><td>1 + 0</td><td>1 + 0</td><td>40 kg</td><td>35</td></tr>
+<tr><td class="lv">2</td><td>27,5 kg</td><td>2 + 0</td><td>2 + 0</td><td>55 kg</td><td>45</td></tr>
+<tr><td class="lv">3</td><td>35 kg</td><td>3 + 0</td><td>3 + 0</td><td>70 kg</td><td>55</td></tr>
+<tr class="lvl-goal"><td class="lv">4 · KAT 4</td><td>42,5 kg</td><td>5 + 0</td><td>5 + 0</td><td>85 kg</td><td>65</td></tr>
+<tr><td class="lv">5</td><td>50 kg</td><td>5 + 5</td><td>5 + 5</td><td>100 kg</td><td>75</td></tr>
+<tr class="lvl-reach"><td class="lv">6</td><td>55 kg</td><td>5 + 10</td><td>5 + 10</td><td>110 kg</td><td>80</td></tr>
+<tr class="lvl-reach"><td class="lv">7</td><td>60 kg</td><td>5 + 15</td><td>5 + 15</td><td>120 kg</td><td>85</td></tr>
+<tr><td class="lv">8</td><td>65 kg</td><td>5 + 20</td><td>5 + 20</td><td>130 kg</td><td>90</td></tr>
+<tr><td class="lv">9</td><td>70 kg</td><td>5 + 25</td><td>5 + 25</td><td>140 kg</td><td>95</td></tr>
+<tr><td class="lv">10</td><td>75 kg</td><td>5 + 30</td><td>5 + 30</td><td>150 kg</td><td>100</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tc-legend"><span><i style="background:rgba(138,154,75,.55)"></i>Dit mål — niveau 4 / KAT 4</span><span><i style="background:rgba(205,185,138,.45)"></i>Stræk — niveau 6–7</span></div>
+
+    <div class="tc-h4">Forsvarets fysiske test (Test C · karakter)</div>
+    <div class="mod-scroll"><table>
+      <thead><tr><th>Karakter</th><th>Lunges</th><th>Dips</th><th>Kropshævn.</th><th>Dødløft</th><th>Planken</th></tr></thead>
+      <tbody>
+<tr class="lvl-reach"><td class="lv">5</td><td>40 rep · 50 kg</td><td>8 rep · 10 kg</td><td>8 rep · 10 kg</td><td>8 rep · 100 kg</td><td>120 sek · 20 kg</td></tr>
+<tr class="lvl-goal"><td class="lv">4</td><td>40 rep · 40 kg</td><td>8 rep · 0 kg</td><td>8 rep · 0 kg</td><td>8 rep · 80 kg</td><td>120 sek · 15 kg</td></tr>
+<tr><td class="lv">3</td><td>30 rep · 40 kg</td><td>6 rep · 0 kg</td><td>6 rep · 0 kg</td><td>6 rep · 80 kg</td><td>120 sek · 10 kg</td></tr>
+<tr><td class="lv">2</td><td>30 rep · 30 kg</td><td>4 rep · 0 kg</td><td>4 rep · 0 kg</td><td>6 rep · 60 kg</td><td>120 sek · 0 kg</td></tr>
+<tr><td class="lv">1</td><td>30 rep · 10 kg</td><td>2 rep · 0 kg</td><td>2 rep · 0 kg</td><td>6 rep · 50 kg</td><td>90 sek · 0 kg</td></tr>
+<tr><td class="lv">0</td><td>20 rep · 10 kg</td><td>1 rep · 0 kg</td><td>1 rep · 0 kg</td><td>6 rep · 40 kg</td><td>60 sek · 0 kg</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted);font-size:12px;margin-top:8px">Den offentlige test bruger <b style="color:var(--sand)">Planken</b> som 5. øvelse; SSR-versionen bruger <b style="color:var(--sand)">Burpees</b>. Reps tælles inden for tidsgrænsen (lunges maks 2 min, øvrige maks 1 min).</p>
+
+    <div class="tc-h4">Sådan rammer du niveauet — uden længere pas</div>
+    <div class="info-grid">
+      <div class="info-card"><div class="where">Styrke B</div><h3>Lunges</h3><p><b>Barbell lunges 3×10/ben</b>. Mål 42,5 kg → 55–60 kg. Erstatter Bulgarian split squat.</p></div>
+      <div class="info-card"><div class="where">Styrke A</div><h3>Dips</h3><p><b>Vægtede dips 4×5–8</b>. Mål 5 rene → +10–15 kg. Erstatter bænkpres (bænk flyttet til Styrke C).</p></div>
+      <div class="info-card"><div class="where">Styrke A &amp; C</div><h3>Kropshævning</h3><p><b>Vægtede pull-ups 4–5×5</b>, overhåndsgreb. Mål 5 rene → +10–15 kg.</p></div>
+      <div class="info-card"><div class="where">Styrke B</div><h3>Dødløft</h3><p><b>Tungt 5-rep-sæt</b> (byg fra 5×5). Mål 85 kg → 110–120 kg ×5.</p></div>
+      <div class="info-card"><div class="where">Onsdag</div><h3>Burpees</h3><p>Byt bakke/airbike ud for <b>5-min burpee-test</b> eller EMOM. Mål 65 → 80–85 reps.</p></div>
+      <div class="info-card"><div class="where">Styrke C</div><h3>Planken</h3><p><b>Vægtet planke</b> mod 120 sek + vægt (Forsvaret-variant). Carrier 6 kg → mere.</p></div>
+    </div>
+
+    <div class="card-note" style="margin-top:16px">⚙ <b>Udstyr:</b> +10–15 kg på dips/pull-ups kræver dyp-bælte eller vægtvest — din 6 kg carrier rækker til ca. niveau 5–6. Dødløft 120 kg (niv. 7) er ved din plade-grænse (20 kg stang + 100 kg plader); flere plader kræves til niveau 8+.</div>
+    <div class="card-note" style="margin-top:10px">◉ <b>Test dig selv hver 4.–6. uge:</b> kør de 5 øvelser efter reglerne, log dem, og se dit niveau i tabellen. Brug "Seneste session" → coach-eksport til en vurdering.</div>
+
+    <div class="tc-h4">Testkrav — udførelse</div>
+    <div class="info-card">
+      <ul>
+        <li><b>Lunges:</b> vægtstang på skuldre; bagerste knæ maks 10 cm over gulv; ret ryg; kontinuerligt uden pause.</li>
+        <li><b>Dips:</b> frithængende; ned til bagsiden af skuldrene er under albuerne; fuld lockout i toppen.</li>
+        <li><b>Kropshævning:</b> overhåndsgreb; strakte arme i bund; hagen over stangen; kontinuerligt.</li>
+        <li><b>Dødløft:</b> fødder inden for håndgrebet; ret ryg; fuld lockout i knæ og hofte; kontrolleret retur.</li>
+        <li><b>Burpees:</b> fra stående til maven rører gulv (hænder fri) → hop op med knæ, hofte og skulder i lige linje.</li>
+        <li><b>Planken:</b> albuer i skulderbredde; ret linje; ingen vugge; hovedet i naturlig forlængelse.</li>
+      </ul>
     </div>
   </section>
 
@@ -822,22 +1052,29 @@
     document.getElementById('b-d').value=today();
 
     // fill scroll-pickers
-    function fillSelect(id,min,max,step){
+    function fillSelect(id,min,max,step,lead){
       var sel=document.getElementById(id);if(!sel)return;
       sel.innerHTML='';
       var ph=document.createElement('option');ph.value='';ph.textContent='–';sel.appendChild(ph);
+      (lead||[]).forEach(function(o){var op=document.createElement('option');op.value=o.v;op.textContent=o.t;sel.appendChild(op);});
       var n=Math.round((max-min)/step);
       for(var i=0;i<=n;i++){
         var v=min+i*step;var s=(Math.round(v*100)/100).toString();
         var o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o);
       }
     }
-    fillSelect('s-w',0,250,2.5);   // styrke vægt
-    fillSelect('s-r',1,30,1);      // reps
+    fillSelect('s-w',2.5,250,2.5,[{v:'bw',t:'Kropsvægt'}]); // vægt: kropsvægt + ekstra last
+    fillSelect('s-r',1,60,1);      // reps / sekunder (til hold)
     fillSelect('c-dist',0,30,0.5); // distance km
     fillSelect('c-w',0,40,1);      // rygsæk vægt
     fillSelect('c-t',0,240,5);     // tid min
     fillSelect('b-w',40,150,0.5);  // kropsvægt
+
+    /* ---- bodyweight-aware helpers ---- */
+    function isBW(w){return w==='bw';}
+    function wdisp(w){return isBW(w)?'Kropsvægt':(w+' kg');}
+    function scoreOf(s){return isBW(s.w)?s.r:e1rm(s.w,s.r);}     // kropsvægt scores på reps, ellers e1RM
+    function setStr(s){return isBW(s.w)?('Kropsvægt × '+s.r):(s.w+' kg × '+s.r+' (e1RM '+e1rm(s.w,s.r)+')');}
 
     /* ---- log tabs ---- */
     document.querySelectorAll('.log-tab').forEach(function(t){
@@ -911,19 +1148,22 @@
       refreshExSelect();
       var pick=document.getElementById('s-chart-ex').value;
       var rows=db.strength.filter(function(s){return s.ex===pick;}).sort(function(a,b){return a.date<b.date?-1:1;});
-      var pts=rows.map(function(s){return {y:e1rm(s.w,s.r),label:fmtDate(s.date)};});
+      var pts=rows.map(function(s){return {y:scoreOf(s),label:fmtDate(s.date)};});
       drawChart(document.getElementById('s-chart'),pts);
-      document.getElementById('s-chart-meta').textContent=pick&&pick!=='—'?('Est. 1RM for '+pick+' (Epley)'):'Estimeret 1RM over tid';
+      var bwMode=rows.length&&isBW(rows[rows.length-1].w);
+      document.getElementById('s-chart-meta').textContent=(pick&&pick!=='—')?((bwMode?'Reps over tid — ':'Est. 1RM (Epley) — ')+pick):'Progression over tid';
       // list (newest first, all exercises, max 25)
       var list=document.getElementById('s-list');list.innerHTML='';
       var all=db.strength.slice().sort(function(a,b){return a.date<b.date?1:-1;}).slice(0,25);
       if(all.length===0){list.innerHTML='<div class="empty">Endnu ingen sæt registreret</div>';return;}
-      // PR detection per exercise
-      var best={};db.strength.forEach(function(s){var v=e1rm(s.w,s.r);if(!best[s.ex]||v>best[s.ex])best[s.ex]=v;});
+      // PR detection per exercise (by score)
+      var best={};db.strength.forEach(function(s){var v=scoreOf(s);if(!best[s.ex]||v>best[s.ex])best[s.ex]=v;});
       all.forEach(function(s){
         var li=document.createElement('li');
-        var isPR=e1rm(s.w,s.r)===best[s.ex];
-        li.innerHTML='<span class="li-main"><b>'+s.ex+'</b> · '+s.w+' kg × '+s.r+(isPR?'<span class="pr-badge">PR</span>':'')+'</span>'+
+        var isPR=scoreOf(s)===best[s.ex];
+        var main='<b>'+s.ex+'</b> · '+wdisp(s.w)+' × '+s.r+(isPR?'<span class="pr-badge">PR</span>':'');
+        if(s.note)main+='<span class="li-note">'+esc(s.note)+'</span>';
+        li.innerHTML='<span class="li-main">'+main+'</span>'+
           '<span style="display:flex;align-items:center;gap:8px"><span class="li-date">'+fmtDate(s.date)+'</span><button class="li-del" data-t="strength" data-id="'+s.id+'">×</button></span>';
         list.appendChild(li);
       });
@@ -945,7 +1185,10 @@
       if(all.length===0){list.innerHTML='<div class="empty">Endnu ingen ture registreret</div>';return;}
       all.forEach(function(c){
         var li=document.createElement('li');
-        li.innerHTML='<span class="li-main"><b>'+c.type+'</b> · '+c.dist+' km · '+c.w+' kg · '+c.t+' min</span>'+
+        var parts=[];if(c.dist)parts.push(c.dist+' km');if(c.w)parts.push(c.w+' kg');if(c.t)parts.push(c.t+' min');
+        var main='<b>'+c.type+'</b>'+(parts.length?' · '+parts.join(' · '):'');
+        if(c.note)main+='<span class="li-note">'+esc(c.note)+'</span>';
+        li.innerHTML='<span class="li-main">'+main+'</span>'+
           '<span style="display:flex;align-items:center;gap:8px"><span class="li-date">'+fmtDate(c.date)+'</span><button class="li-del" data-t="cardio" data-id="'+c.id+'">×</button></span>';
         list.appendChild(li);
       });
@@ -964,7 +1207,9 @@
       if(all.length===0){list.innerHTML='<div class="empty">Endnu ingen vejninger</div>';return;}
       all.forEach(function(b){
         var li=document.createElement('li');
-        li.innerHTML='<span class="li-main"><b>'+b.w+' kg</b></span>'+
+        var main='<b>'+b.w+' kg</b>';
+        if(b.note)main+='<span class="li-note">'+esc(b.note)+'</span>';
+        li.innerHTML='<span class="li-main">'+main+'</span>'+
           '<span style="display:flex;align-items:center;gap:8px"><span class="li-date">'+fmtDate(b.date)+'</span><button class="li-del" data-t="bw" data-id="'+b.id+'">×</button></span>';
         list.appendChild(li);
       });
@@ -973,25 +1218,30 @@
     function renderAll(){renderStrength();renderCardio();renderBW();}
 
     /* ---- save handlers ---- */
+    function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     document.getElementById('s-save').addEventListener('click',function(){
-      var w=parseFloat(document.getElementById('s-w').value),r=parseInt(document.getElementById('s-r').value,10),d=document.getElementById('s-d').value;
-      if(!w||!r||!d){toast('Udfyld vægt, reps og dato');return;}
-      db.strength.push({id:uid(),ex:document.getElementById('s-ex').value,w:w,r:r,date:d});
-      save();document.getElementById('s-w').value='';document.getElementById('s-r').value='';
+      var wRaw=document.getElementById('s-w').value,r=parseInt(document.getElementById('s-r').value,10),d=document.getElementById('s-d').value;
+      if(!wRaw||!r||!d){toast('Vælg vægt, reps og dato');return;}
+      var w=wRaw==='bw'?'bw':parseFloat(wRaw);
+      var note=document.getElementById('s-note').value.trim();
+      db.strength.push({id:uid(),ex:document.getElementById('s-ex').value,w:w,r:r,note:note,date:d});
+      save();document.getElementById('s-w').value='';document.getElementById('s-r').value='';document.getElementById('s-note').value='';
       renderStrength();toast('Sæt gemt');
     });
     document.getElementById('c-save').addEventListener('click',function(){
       var dist=parseFloat(document.getElementById('c-dist').value),w=parseFloat(document.getElementById('c-w').value),t=parseInt(document.getElementById('c-t').value,10),d=document.getElementById('c-d').value;
       if(!d){toast('Vælg en dato');return;}
-      db.cardio.push({id:uid(),type:document.getElementById('c-type').value,dist:dist||0,w:w||0,t:t||0,date:d});
-      save();document.getElementById('c-dist').value='';document.getElementById('c-w').value='';document.getElementById('c-t').value='';
+      var note=document.getElementById('c-note').value.trim();
+      db.cardio.push({id:uid(),type:document.getElementById('c-type').value,dist:dist||0,w:w||0,t:t||0,note:note,date:d});
+      save();document.getElementById('c-dist').value='';document.getElementById('c-w').value='';document.getElementById('c-t').value='';document.getElementById('c-note').value='';
       renderCardio();toast('Tur gemt');
     });
     document.getElementById('b-save').addEventListener('click',function(){
       var w=parseFloat(document.getElementById('b-w').value),d=document.getElementById('b-d').value;
-      if(!w||!d){toast('Udfyld vægt og dato');return;}
-      db.bw.push({id:uid(),w:w,date:d});
-      save();document.getElementById('b-w').value='';
+      if(!w||!d){toast('Vælg vægt og dato');return;}
+      var note=document.getElementById('b-note').value.trim();
+      db.bw.push({id:uid(),w:w,note:note,date:d});
+      save();document.getElementById('b-w').value='';document.getElementById('b-note').value='';
       renderBW();toast('Vejning gemt');
     });
 
@@ -1029,7 +1279,8 @@
       var L=[];
       L.push('HJEMMEVÆRN-OPTRÆNING — LOG (historik)');
       L.push('Eksporteret: '+today());
-      L.push('Kontekst: ~13–14 ugers optræning til Hjemmeværnet. Mål: robusthed, rucking, styrke, core, greb. Ca. 45 min/session, hjemmegym. Rotation Uge A (Styrke A+B) / Uge B (Styrke C+D); ruck onsdag; lang tur søndag; plate carrier (6 kg) til tilvænning. Tunge løft holdes RPE 7–8. Skal undgå overbelastning af lår og stortå. e1RM = estimeret 1RM (Epley).');
+      L.push('Kontekst: ~13–14 ugers optræning til Hjemmeværnet. Mål: robusthed, rucking, styrke, core, greb. Ca. 45 min/session, hjemmegym (stang, KB, parallettes, landmine, airbike, plate carrier). Rotation Uge A / B / C. Ruck onsdag; lang tur søndag; carrier til tilvænning. Tunge løft RPE 7–8. Skal undgå overbelastning af lår/stortå. e1RM = estimeret 1RM (Epley). "Kropsvægt" = ingen ekstra last (progression måles på reps/tid).');
+      L.push('TEST C-MÅL: bestå SSR Test C niveau 4 (KAT 4), stræk mod niv. 6–7 — Lunges 42,5->55-60 kg ×10/ben, Dips 5->5+10-15 kg, Kropshævning 5->5+10-15 kg, Dødløft 85->110-120 kg ×5, Burpees 65->80-85 på 5 min. Vurder gerne progression op mod disse tal.');
       L.push('');
       L.push('== STYRKE (pr. øvelse) ==');
       if(db.strength.length===0){L.push('(ingen data)');}
@@ -1037,13 +1288,13 @@
         var byEx={};db.strength.forEach(function(s){(byEx[s.ex]=byEx[s.ex]||[]).push(s);});
         Object.keys(byEx).forEach(function(ex){
           var a=byEx[ex].slice().sort(function(x,y){return x.date<y.date?-1:1;});
-          var f=a[0],l=a[a.length-1],fe=e1rm(f.w,f.r),le=e1rm(l.w,l.r),d=le-fe;
-          L.push(ex+': '+a.length+' sess. | '+f.date+' '+f.w+'kg×'+f.r+' (e1RM '+fe+') -> '+l.date+' '+l.w+'kg×'+l.r+' (e1RM '+le+') | Δe1RM '+(d>=0?'+':'')+d);
+          var f=a[0],l=a[a.length-1],d=scoreOf(l)-scoreOf(f),unit=isBW(l.w)?' reps':' e1RM';
+          L.push(ex+': '+a.length+' sess. | '+f.date+' '+setStr(f)+' -> '+l.date+' '+setStr(l)+' | Δ'+(d>=0?'+':'')+d+unit);
         });
         L.push('');
-        L.push('Seneste 12 sæt (dato | øvelse | vægt×reps | e1RM):');
+        L.push('Seneste 12 sæt (dato | øvelse | belastning×reps | evt. note):');
         db.strength.slice().sort(function(x,y){return x.date<y.date?1:-1;}).slice(0,12).forEach(function(s){
-          L.push('  '+s.date+' | '+s.ex+' | '+s.w+'×'+s.r+' | '+e1rm(s.w,s.r));
+          L.push('  '+s.date+' | '+s.ex+' | '+setStr(s)+(s.note?' | '+s.note:''));
         });
       }
       L.push('');
@@ -1054,9 +1305,9 @@
         var cf=c[0],cl=c[c.length-1];
         L.push('Antal ture: '+c.length);
         L.push('Distance: '+cf.dist+'km -> '+cl.dist+'km | Rygsæk-vægt: '+cf.w+'kg -> '+cl.w+'kg');
-        L.push('Seneste 8 ture (dato | type | km | kg | min | tempo min/km):');
+        L.push('Seneste 8 ture (dato | type | km | kg | min | tempo min/km | evt. note):');
         c.slice().reverse().slice(0,8).forEach(function(t){
-          L.push('  '+t.date+' | '+t.type+' | '+t.dist+' | '+t.w+' | '+t.t+' | '+(t.dist>0?r1(t.t/t.dist):'-'));
+          L.push('  '+t.date+' | '+t.type+' | '+t.dist+' | '+t.w+' | '+t.t+' | '+(t.dist>0?r1(t.t/t.dist):'-')+(t.note?' | '+t.note:''));
         });
       }
       L.push('');
@@ -1085,8 +1336,9 @@
         L.push('STYRKE denne dag:');
         sets.forEach(function(s){
           var prev=db.strength.filter(function(x){return x.ex===s.ex&&x.date<day;}).sort(function(a,b){return a.date<b.date?1:-1;})[0];
-          var line='  '+s.ex+': '+s.w+'kg×'+s.r+' (e1RM '+e1rm(s.w,s.r)+')';
-          if(prev){var d=e1rm(s.w,s.r)-e1rm(prev.w,prev.r);line+=' | forrige '+prev.date+' '+prev.w+'×'+prev.r+' (e1RM '+e1rm(prev.w,prev.r)+') -> Δ '+(d>=0?'+':'')+d;}
+          var line='  '+s.ex+': '+setStr(s);
+          if(prev){var d=scoreOf(s)-scoreOf(prev),unit=isBW(s.w)?' reps':' e1RM';line+=' | forrige '+prev.date+' '+setStr(prev)+' -> Δ'+(d>=0?'+':'')+d+unit;}
+          if(s.note)line+=' | note: '+s.note;
           L.push(line);
         });
         L.push('');
@@ -1094,7 +1346,11 @@
       var turs=db.cardio.filter(function(c){return c.date===day;});
       if(turs.length){
         L.push('RUCK / KONDITION denne dag:');
-        turs.forEach(function(t){L.push('  '+t.type+': '+t.dist+'km · '+t.w+'kg · '+t.t+'min (tempo '+(t.dist>0?r1(t.t/t.dist):'-')+' min/km)');});
+        turs.forEach(function(t){
+          var parts=[];if(t.dist)parts.push(t.dist+'km');if(t.w)parts.push(t.w+'kg');if(t.t)parts.push(t.t+'min');
+          if(t.dist>0)parts.push('tempo '+r1(t.t/t.dist)+' min/km');
+          L.push('  '+t.type+': '+parts.join(' · ')+(t.note?' | note: '+t.note:''));
+        });
         L.push('');
       }
       L.push('OPGAVE TIL COACH: Vurdér denne session — var belastning og volumen passende, hvordan ser progressionen ud vs. sidste gang, og hvad bør jeg justere næste gang?');
